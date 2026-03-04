@@ -63,6 +63,9 @@ esxi-7-homelab/
 ├── 03-server-roles-and-application-services/
 │   ├── README.md
 │   ├── ad-users-and-ntfs-permissions.md
+│   ├── print-server.md
+│   ├── ubuntu-apache-domain-join-ssh.md
+│   ├── windows-web-service-iis.md
 │   └── screenshots/
 │
 ├── troubleshooting.md
