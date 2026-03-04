@@ -24,7 +24,8 @@ In progress
 
 1. [Active Directory Users and NTFS Permissions](ad-users-and-ntfs-permissions.md)
 2. [Print Server](print-server.md)
-3. [Ubuntu Apache Web Server, Domain Join and SSH](ubuntu-apache-service-domain-join-ssh.md)
+3. [Ubuntu Apache Web Server, Domain Join and SSH](ubuntu-apache-domain-join-ssh.md)
+4. [Windows Web Service (IIS)](windows-web-service-iis.md)
 
 ---
 
@@ -45,12 +46,13 @@ In progress
 | VM Name         | Operating System        | vCPU | RAM | Disk  | Provisioning | Assigned Roles                 |
 |-----------------|------------------------|------|-----|-------|-------------|--------------------------------|
 | WS2019-DC01     | Windows Server 2019    | 2    | 6GB | 40GB  | Thick       | Active Directory, DNS         |
-| WS2019-FS01     | Windows Server 2019    | 2    | 6GB | 40GB  | Thin        | File Services, DHCP, Web Service, Print |
+| WS2019-FS01     | Windows Server 2019    | 2    | 6GB | 40GB  | Thin        | File Services, DHCP, Web Service, Print, IIS |
 | Ubuntu-SRV01    | Ubuntu Server LTS      | 2    | 4GB | 30GB  | Thin        | Apache Web Server, OpenSSH    |
-| W11-CL01     | Windows 11 Pro      | 2    | 6GB  | 60GB | Thin        | Client machine|
+| W11-CL01     | Windows 11 Pro      | 2    | 6GB  | 60GB | Thin        | Client machine - (Lab User & Lab Guest)|
 
 **Note:** WS2019-DC01 was provisioned as Thick by default. This does not negatively impact lab functionality and was intentionally left unchanged.
 
+---
 
 ## AD User Creation, File Share and NTFS Permissions
 
@@ -59,6 +61,8 @@ For actual steps, view the view the [AD user creation, file share and NTFS permi
 This section focuses on creating domain users within Active Directory and configuring shared folders on the File Server with proper NTFS permissions. The goal is to simulate a real-world environment where access to resources is centrally managed and controlled through user accounts and security groups.
 
 These configurations allow us to validate authentication, authorization, and file access behavior from a domain-joined client, ensuring that identity and access control are functioning correctly within the lab infrastructure.
+
+---
 
 ## Print Server
 
@@ -69,3 +73,13 @@ In this section, Print Services will be installed on WS2019-FS01 and configured 
 A virtual printer will be created and published through Active Directory, allowing domain-joined clients to discover and connect to it through the network. This mirrors how organizations manage shared printers without configuring each workstation manually.
 
 Implementing a print server further strengthens the lab by introducing another centrally managed service commonly found in real business environments.
+
+---
+
+## Ubuntu Apache Web Server, Domain Join and SSH
+
+For detailed steps on installing Apache, joining the Ubuntu server to the `lab.local` domain, and configuring SSH access, view the [Apache Web Server and AD Integration documentation](ubuntu-apache-ad-ssh.md).
+
+In this section, the Ubuntu server is integrated into the Active Directory environment and deployed as a Linux-based web server within the isolated lab network. Apache is installed and validated, the server is published through Active Directory DNS, and domain authentication is configured using SSSD and Kerberos.
+
+SSH is also configured and hardened to allow secure remote administration using Active Directory credentials, with access restricted through a domain security group. This setup simulates a common enterprise scenario where Linux application servers operate alongside Windows infrastructure while relying on centralized authentication and DNS services.

@@ -2,22 +2,24 @@
 
 ## Summary
 
-This document covers the installation and configuration of an Apache web server on the Ubuntu Server within the isolated lab network, joining it to the lab.local domain and configuring SSH.
+This document covers the installation and configuration of an Apache web server on the Ubuntu Server within the isolated lab network, joining the server to the `lab.local` domain, and configuring SSH for remote administration.
 
-The objective is to simulate a Linux-based web service operating inside a Windows Active Directory environment. This mirrors real-world enterprise scenarios where Linux web servers rely on Windows DNS infrastructure for name resolution and client access.
+The objective is to simulate a Linux-based web service operating inside a Windows Active Directory environment. This mirrors real-world enterprise scenarios where Linux servers run application services while relying on Windows infrastructure such as DNS and Active Directory for identity, name resolution, and network access.
 
-This configuration will include:
+This configuration includes:
 
-- Installing Apache
+- Joining the Ubuntu server to the `lab.local` domain
+- Installing and enabling the Apache web server
 - Configuring the default web root
-- Validating service status and port binding
+- Verifying Apache service status and port binding
+- Installing and configuring OpenSSH for remote administration
 - Creating an internal DNS record on the Domain Controller
-- Testing name-based resolution from a Windows 11 domain-joined client
+- Testing name-based resolution from the Windows 11 domain-joined client
 - Verifying client-to-server communication over HTTP
 
 ---
 
-### VMs In Use
+## VMs In Use
 
 | VM Name         | Operating System        | vCPU | RAM | Disk  | Provisioning | Assigned Roles                 |
 |-----------------|------------------------|------|-----|-------|-------------|--------------------------------|
@@ -289,3 +291,138 @@ The login prompt displayed the domain-based identity:
 This confirms centralized authentication through Active Directory rather than local user management.
 
 ---
+
+## Basic SSH Hardening
+
+The SSH configuration file was edited:
+
+```
+sudo nano /etc/ssh/sshd_config
+```
+
+The following security settings were configured:
+
+```
+PermitRootLogin no
+PermitEmptyPasswords no
+MaxAuthTries 3
+LoginGraceTime 30
+```
+
+These settings improve SSH security by:
+
+- Preventing the root account from logging in through SSH
+- Disabling logins using empty passwords
+- Limiting authentication attempts to three per connection
+- Terminating login sessions that exceed the allowed authentication time window
+
+After making changes, the configuration was validated and the SSH service restarted:
+
+```
+sudo sshd -t
+sudo systemctl restart ssh
+```
+
+---
+
+### Restricting SSH Access Using Active Directory Groups
+
+To simulate enterprise role-based access control, SSH access was restricted to a specific Active Directory security group.
+
+A new domain security group was created:
+
+```
+LabSSHAccess
+```
+
+A domain user was then added to this group to represent an authorized SSH administrator:
+
+```
+LabUser
+```
+
+A second domain user was created to test access denial:
+
+```
+LabGuest
+```
+
+This user was intentionally not added to the SSH access group and was only assigned to the file share group. This allowed testing that unauthorized users would be denied SSH access.
+
+The SSH configuration was then updated to allow access only to members of the approved domain group:
+
+```
+AllowGroups labsshaccess@lab.local
+```
+
+After restarting the SSH service, authentication tests were performed from a Windows client.
+
+---
+
+## SSH Access Verification
+
+Two login scenarios were tested to verify the configuration.
+
+### Authorized User Test
+
+```
+ssh -l "labuser@lab.local" 192.168.11.30
+```
+
+Result:
+
+The user was successfully authenticated and granted shell access because they were a member of the `LabSSHAccess` group.
+
+---
+
+### Unauthorized User Test
+
+```
+ssh -l "labguest@lab.local" 192.168.11.30
+```
+
+Result:
+
+The login attempt was denied because the user was not a member of the allowed SSH group.
+
+This confirmed that SSH access was successfully restricted using Active Directory group membership.
+
+---
+
+## SSH Log Monitoring and Security Verification
+
+To observe authentication behavior and confirm that the access control policies were functioning correctly, SSH logs were monitored directly on the Ubuntu server.
+
+The following command was used to watch login attempts in real time:
+
+```
+sudo journalctl -u ssh -f
+```
+
+Monitoring the logs allowed verification of both successful and denied login attempts.
+
+Authorized users showed normal authentication messages, while unauthorized users generated log entries indicating that they were not allowed because they were not part of the permitted SSH group.
+
+This step provided additional confirmation that the SSH hardening configuration and group-based access controls were operating as intended.
+
+---
+
+## Results
+
+The Ubuntu server was successfully integrated into the `lab.local` Active Directory environment and deployed as a functioning Apache web server within the isolated lab network.
+
+Apache was installed, enabled, and validated through both service checks and client-side HTTP access. The server was published in Active Directory DNS and successfully resolved from the Windows 11 domain-joined client using its hostname.
+
+Active Directory integration was verified through Kerberos authentication and SSSD identity resolution, allowing domain users to log into the Linux system without requiring local accounts. SSH access was also successfully configured and hardened, with login permissions restricted using an Active Directory security group.
+
+These results confirm proper cross-platform integration between Windows infrastructure and Linux services, demonstrating centralized authentication, DNS resolution, and secure remote administration within the lab environment.
+
+---
+
+## Next Steps
+
+With the Apache web server successfully deployed on Ubuntu and integrated into the Active Directory environment, the next step is to configure a Windows-based web service on `WS2019-FS01`.
+
+This will involve installing and configuring IIS (Internet Information Services) to host an internal web service from the Windows Server. This step will allow the lab to demonstrate both Linux-based and Windows-based web hosting within the same domain infrastructure.
+
+To view next steps, view the [Windows web service (IIS) documentation](windows-web-service-iis.md)

@@ -18,7 +18,7 @@ We will:
 
 ---
 
-### VMs In Use
+## VMs In Use
 
 | VM Name         | Operating System        | vCPU | RAM | Disk  | Provisioning | Assigned Roles                 |
 |-----------------|------------------------|------|-----|-------|-------------|--------------------------------|

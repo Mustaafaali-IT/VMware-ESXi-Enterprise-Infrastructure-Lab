@@ -10,7 +10,7 @@ The goal of this section is to demonstrate how shared resources can be centrally
 
 ---
 
-### VMs In Use
+## VMs In Use
 
 | VM Name         | Operating System        | vCPU | RAM | Disk  | Provisioning | Assigned Roles                 |
 |-----------------|------------------------|------|-----|-------|-------------|--------------------------------|
@@ -168,5 +168,5 @@ The next build will focus on configuring an Apache web server on the Ubuntu Serv
 - Testing web access from the Windows domain 
 - Joining Ubuntu to the Domain ontrollers centralized AD
 
-To view next steps, view the [Ubuntu Apache Web Server, Domain Join and SSH documentation](ubuntu-apache-service-domain-join-ssh.md)
+To view next steps, view the [Ubuntu Apache Web Server, Domain Join and SSH documentation](ubuntu-apache-domain-join-ssh.md)
 

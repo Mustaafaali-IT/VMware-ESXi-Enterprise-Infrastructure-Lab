@@ -85,3 +85,67 @@ This introduced the risk of dual DHCP servers operating within the same broadcas
 The network architecture was redesigned to use a dedicated vSwitch with no physical uplink, creating a fully isolated internal lab network.
 
 This eliminated any possibility of DHCP conflicts with the home router and provided a controlled testing environment.
+
+---
+
+## Troubleshooting SSH Access with Active Directory Groups
+
+During testing of SSH access control using Active Directory groups, the authorized domain user was initially denied access even though the user had been added to the correct group.
+
+SSH logs showed messages similar to:
+
+```
+User labuser@lab.local from <client-ip> not allowed because none of user's groups are listed in AllowGroups
+```
+
+This indicated that SSH was not recognizing the user's group membership.
+
+---
+
+## Investigating Group Membership
+
+Group membership was verified directly on the Ubuntu server using:
+
+```
+id "labuser@lab.local"
+```
+
+and
+
+```
+getent group "labsshaccess@lab.local"
+```
+
+Both commands confirmed that the user was correctly assigned to the `LabSSHAccess` Active Directory group.
+
+---
+
+## Identifying the Root Cause
+
+The issue was caused by **SSSD caching outdated identity information** from Active Directory.
+
+Since SSSD handles domain identity resolution on the Linux system, group membership changes may not be immediately recognized if cached data is still being used.
+
+---
+
+## Clearing Cached Identity Data
+
+To resolve this issue, the SSSD cache was cleared and the service restarted:
+
+```
+sudo systemctl restart sssd
+sudo sss_cache -E
+sudo systemctl restart ssh
+```
+
+After clearing the cache, the SSH login test was repeated and the authorized user was able to successfully authenticate.
+
+---
+
+## Lessons Learned
+
+This troubleshooting process demonstrates a common scenario when integrating Linux systems with Active Directory.
+
+Because SSSD caches identity data, group membership updates in Active Directory may not be immediately recognized by the Linux system. Clearing the cache forces the server to retrieve updated identity information from the domain controller.
+
+Understanding this behavior is important when implementing group-based access controls in enterprise environments.
