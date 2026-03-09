@@ -149,3 +149,77 @@ This troubleshooting process demonstrates a common scenario when integrating Lin
 Because SSSD caches identity data, group membership updates in Active Directory may not be immediately recognized by the Linux system. Clearing the cache forces the server to retrieve updated identity information from the domain controller.
 
 Understanding this behavior is important when implementing group-based access controls in enterprise environments.
+
+---
+
+# Troubleshooting
+
+## Windows Client Not Receiving Domain CA Certificate
+
+While verifying that the Windows 11 client trusted the newly configured Active Directory Certificate Authority, the CA certificate did not appear in the **Trusted Root Certification Authorities** store.
+
+---
+
+### Symptoms
+
+Several issues were observed on the Windows 11 client:
+
+- The CA certificate was missing from the trusted root store
+- `gpupdate /force` failed with an error indicating the domain controller could not be contacted
+- The client could not ping the domain controller
+- Running `ipconfig /all` showed an IP address in the **169.254.x.x range**
+
+Example output:
+
+```
+Autoconfiguration IPv4 Address : 169.254.x.x
+Subnet Mask                    : 255.255.0.0
+```
+
+This indicated that the client was not receiving a DHCP lease.
+
+---
+
+### Root Cause
+
+The Windows client was unable to reach the DHCP server. Because no DHCP response was received, Windows automatically assigned itself an **APIPA (Automatic Private IP Address)** in the 169.254.0.0/16 range.
+
+With this address the client had:
+
+- No default gateway
+- No valid DNS configuration
+- No connectivity to the domain controller
+
+Since Group Policy relies on domain connectivity, the enterprise CA certificate could not be distributed to the client machine.
+
+---
+
+### Resolution
+
+The DHCP service was checked on the file server (FS01). Restarting the DHCP service restored normal DHCP operation.
+
+After restarting the service, the Windows client successfully obtained an IP address from the DHCP scope.
+
+The following commands were then used on the client:
+
+```
+ipconfig /release
+ipconfig /renew
+```
+
+Once the client received a valid IP configuration from DHCP, it was able to communicate with the domain controller again.
+
+Running:
+
+```
+gpupdate /force
+certutil -pulse
+```
+
+allowed the system to refresh Group Policy and pull the enterprise root certificate from Active Directory. The domain CA certificate then appeared in the **Trusted Root Certification Authorities** store as expected.
+
+---
+
+### Result
+
+After restoring DHCP functionality, domain connectivity was re-established and the enterprise certificate authority trust chain propagated correctly to the Windows 11 client.

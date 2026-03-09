@@ -16,7 +16,17 @@ Phase 3 focuses on turning the lab into a functioning enterprise-style environme
 
 ## What was built
 
-In progress
+Phase 3 expanded the lab beyond core infrastructure by implementing real-world server roles and application services. Identity and access control were validated by creating domain users and security groups in Active Directory and using them to control access to shared resources on the file server. A centralized shared folder was deployed on `WS2019-FS01` with proper NTFS and share-level permissions, and access behavior was verified from the Windows 11 domain client.
+
+Additional enterprise services were introduced to simulate a functioning business network environment:
+
+- **Domain-based file sharing** with NTFS and share permission layering  
+- **Centralized print services** hosted on the file server and published to the domain  
+- **Linux web service deployment** using Apache on Ubuntu integrated with Active Directory DNS  
+- **Secure remote administration** through SSH with authentication restricted by an AD security group  
+- **Windows web hosting** using IIS with an internal intranet site (`intranet.lab.local`)
+
+These services were tested from the domain-joined Windows 11 client to validate authentication, DNS resolution, service discovery, and cross-platform communication within the isolated lab network.
 
 ---
 
@@ -83,3 +93,31 @@ For detailed steps on installing Apache, joining the Ubuntu server to the `lab.l
 In this section, the Ubuntu server is integrated into the Active Directory environment and deployed as a Linux-based web server within the isolated lab network. Apache is installed and validated, the server is published through Active Directory DNS, and domain authentication is configured using SSSD and Kerberos.
 
 SSH is also configured and hardened to allow secure remote administration using Active Directory credentials, with access restricted through a domain security group. This setup simulates a common enterprise scenario where Linux application servers operate alongside Windows infrastructure while relying on centralized authentication and DNS services.
+
+---
+
+## Windows Web Services (IIS)
+
+For detailed installation and configuration steps, view the [Windows Web Service (IIS) documentation](windows-web-service-iis.md).
+
+In this section, Internet Information Services (IIS) is installed on `WS2019-FS01` to host an internal Windows-based web service within the lab environment.
+
+A dedicated site named **LAB-Intranet** is created and published through Active Directory DNS using the hostname `intranet.lab.local`. This allows domain-joined clients to access the site using centralized name resolution instead of relying on direct IP addresses.
+
+---
+
+## Conclusion
+
+Phase 3 expanded the lab from core infrastructure into a functioning enterprise-style environment where identity, access control, and application services operate together.
+
+Domain users and security groups were created and used to control access to shared resources through NTFS and share-level permissions. This validated centralized identity management and real-world access control behavior using Active Directory.
+
+Additional server roles were deployed including a centralized print service and internal web services hosted on both Windows (IIS) and Linux (Apache). These services were integrated into the domain environment and published through Active Directory DNS, allowing domain-joined clients to access them using standard hostname resolution.
+
+The lab now includes a combination of Windows and Linux services operating under the same domain infrastructure, simulating a small enterprise network where authentication, service hosting, and resource access are centrally managed.
+
+
+With application services now operational, the next phase will focus on securing the web infrastructure.
+
+
+[Phase 4 — Secure Web Infrastructure (PKI & SSL)](../04-secure-web-infrastructure-pki-ssl/README.md) will introduce a certificate authority within the domain and implement SSL/TLS encryption for internal web services. This will allow the lab to simulate enterprise-grade certificate management and secure internal web traffic using trusted certificates issued by the domain PKI.

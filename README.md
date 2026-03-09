@@ -29,7 +29,8 @@ The repository will be progressively reorganized into clear phase-based document
 
 - [Phase 1 – ESXi Installation & Core VM Deployment](01-esxi-and-vm/esxi-and-vm-configuration.md)
 - [Phase 2 – Core Network and Domain Infrstructure (DNS, DHCP, File Services, Windows Clients)](02-core-network-and-domain/README.md)
-- [Pashe 3 - Server Roles & Application Services](03-server-roles-and-application-services/README.md)
+- [Phase 3 - Server Roles & Application Services](03-server-roles-and-application-services/README.md)
+- [Phase 4 - Secure Web Infrastructure (PKI & SSL)](04-secure-web-infrastructure-pki-ssl/README.md)
 
 
 Each phase will contain:
@@ -66,6 +67,13 @@ esxi-7-homelab/
 │   ├── print-server.md
 │   ├── ubuntu-apache-domain-join-ssh.md
 │   ├── windows-web-service-iis.md
+│   └── screenshots/
+│
+├── 04-server-roles-and-application-services/
+│   ├── README.md
+│   ├── ad-certificate-authority.md
+│   ├── iis-ssl-certificate-deployment.md
+│   ├── apache-ssl-certificate-deployment.md
 │   └── screenshots/
 │
 ├── troubleshooting.md

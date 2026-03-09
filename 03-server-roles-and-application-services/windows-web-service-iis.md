@@ -114,3 +114,7 @@ Local testing confirmed that the service was running and listening on the defaul
 
 ## Next steps
 
+With application services now operational, the next phase will focus on securing the web infrastructure.
+
+
+**[Phase 4 — Secure Web Infrastructure (PKI & SSL)](../04-secure-web-infrastructure-pki-ssl/README.md)** will introduce a certificate authority within the domain and implement SSL/TLS encryption for internal web services. This will allow the lab to simulate enterprise-grade certificate management and secure internal web traffic using trusted certificates issued by the domain PKI.
