@@ -20,9 +20,9 @@ In progress
 
 ## Order of Documentation
 
-1. [Active Directory Certificate Authority](ad-certificate-services.md)  
-2. [IIS HTTPS Configuration](iis-https-configuration.md)  
-3. [Apache HTTPS Configuration](apache-https-configuration.md)
+1. [Active Directory Certificate Authority](ad-certificate-authority.md)  
+2. [IIS SSL Certificate Deployment](iis-ssl-certificate-deployment.md)  
+3. [Ubuntu Apache SSL Certificate Configuration](apache-ssl-certificate-deployment.md)
 
 ---
 
@@ -75,4 +75,20 @@ Because the certificate is issued by the domain Certificate Authority, domain-jo
 
 For actual steps, view the [Apache SSL Certificate Deployment documentation](apache-ssl-certificate-deployment.md).
 
-In progress.
+In this section, a certificate issued by the internal Active Directory Certificate Authority is deployed to the Apache web server running on `Ubuntu-SRV01`. The certificate is installed on the Linux server and Apache is configured to serve the site over HTTPS.
+
+Once configured, the web service can be accessed securely using `https://apache.lab.local`. Because the certificate is issued by the domain PKI, domain-joined machines automatically trust the connection, allowing encrypted communication between clients and the Linux web server.
+
+This step demonstrates how certificates issued from a Windows-based PKI can be used to secure Linux-hosted services, which is a common scenario in enterprise environments where Windows infrastructure and Linux application servers operate together.
+
+---
+
+## Conclusion
+
+Phase 4 introduced internal certificate management and secure communication within the lab environment by implementing a Public Key Infrastructure and deploying SSL/TLS encryption across both Windows and Linux web services.
+
+During this phase, Active Directory Certificate Services was configured to function as the lab’s internal Certificate Authority. This allowed domain systems to request and trust certificates issued within the environment without relying on external certificate providers.
+
+Using this internal CA, certificates were successfully issued and deployed to multiple services. The Windows IIS intranet site and the Ubuntu Apache web server were both configured to use HTTPS with certificates signed by the internal certificate authority. The Apache deployment required generating a certificate signing request on the Linux server, submitting that request through the CA web enrollment portal, and configuring the Apache SSL virtual host to use the issued certificate and private key.
+
+Once configured, both web services were verified to be operating over encrypted connections. Domain clients were able to access the services using HTTPS without browser security warnings, confirming that the internal CA was trusted across the environment.
