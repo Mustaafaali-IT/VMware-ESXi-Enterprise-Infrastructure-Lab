@@ -1,4 +1,4 @@
-# ESXi 7 Homelab
+# Virtualized Enterprise Infrastructure Lab (VMware ESXi)
 
 Enterprise-style VMware ESXi 7 homelab built on physical hardware for hands-on virtualization, infrastructure, and systems administration practice.
 
