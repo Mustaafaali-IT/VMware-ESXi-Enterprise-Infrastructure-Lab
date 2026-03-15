@@ -31,6 +31,7 @@ The repository will be progressively reorganized into clear phase-based document
 - [Phase 2 – Core Network and Domain Infrstructure (DNS, DHCP, File Services, Windows Clients)](02-core-network-and-domain/README.md)
 - [Phase 3 - Server Roles & Application Services](03-server-roles-and-application-services/README.md)
 - [Phase 4 - Secure Web Infrastructure (PKI & SSL)](04-secure-web-infrastructure-pki-ssl/README.md)
+- [Phase 5 - Veeam Backup Solutions](05-veeam-backup/veeam-backup.md)
 
 
 Each phase will contain:
@@ -74,6 +75,10 @@ esxi-7-homelab/
 │   ├── ad-certificate-authority.md
 │   ├── iis-ssl-certificate-deployment.md
 │   ├── apache-ssl-certificate-deployment.md
+│   └── screenshots/
+│
+├── 05-veaam-backup/
+│   ├── veeam-backup.md
 │   └── screenshots/
 │
 ├── troubleshooting.md
@@ -121,10 +126,9 @@ Services will be deployed incrementally.
 
 ---
 
-## Long-Term Goals
+## Long-Term Goals and Future Plans
 
 - Implement vCenter Server (future phase)
 - Expand storage capacity
-- Practice high-availability concepts
-- Build a realistic enterprise-style virtual infrastructure
+- Impliment Veeam baackup solutions
 - Use lab as portfolio evidence for IT roles

@@ -421,8 +421,8 @@ These results confirm proper cross-platform integration between Windows infrastr
 
 ## Next Steps
 
-With the Apache web server successfully deployed on Ubuntu and integrated into the Active Directory environment, the next step is to configure a Windows-based web service on `WS2019-FS01`.
+he next phase of the lab will focus on **data protection and disaster recovery** by implementing **Veeam Backup & Replication** within the ESXi environment. This will involve deploying a Veeam backup server, connecting it to the ESXi host, and configuring backup jobs for the virtual machines running the lab infrastructure.
 
-This will involve installing and configuring IIS (Internet Information Services) to host an internal web service from the Windows Server. This step will allow the lab to demonstrate both Linux-based and Windows-based web hosting within the same domain infrastructure.
+This phase will demonstrate how enterprise environments protect critical systems through automated VM-level backups, recovery points, and restore capabilities.
 
-To view next steps, view the [Windows web service (IIS) documentation](windows-web-service-iis.md)
+For detailed steps, view the [Veeam Backup Configuration documentation](../05-veeam-backup/veeam-backup.md).
