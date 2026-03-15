@@ -31,7 +31,7 @@ The repository will be progressively reorganized into clear phase-based document
 - [Phase 2 – Core Network and Domain Infrstructure (DNS, DHCP, File Services, Windows Clients)](02-core-network-and-domain/README.md)
 - [Phase 3 - Server Roles & Application Services](03-server-roles-and-application-services/README.md)
 - [Phase 4 - Secure Web Infrastructure (PKI & SSL)](04-secure-web-infrastructure-pki-ssl/README.md)
-- [Phase 5 - Veeam Backup Solutions](05-veeam-backup/veeam-backup.md)
+- [Phase 5 - Veeam Backup & Replication](05-veeam-backup/veeam-backup.md)
 
 
 Each phase will contain:
